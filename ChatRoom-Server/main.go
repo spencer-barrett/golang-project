@@ -10,9 +10,10 @@ import (
 // stores websock connections
 var clients = make(map[*websocket.Conn]bool)
 
+// converts html to WebSocket request
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true // Allow connections from any origin.
+		return true
 	},
 }
 
