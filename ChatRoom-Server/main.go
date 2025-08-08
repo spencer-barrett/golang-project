@@ -35,16 +35,17 @@ func broadcast(message []byte) {
 	}
 }
 
-// serves html file
-func homePage(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "client.html")
-}
-
 // main function
 func main() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/ws", serveWebSocket)
+	mux := http.NewServeMux()
+
+	// WS endpoint
+	mux.HandleFunc("/ws", serveWebSocket)
+
+	// Static files from ./public
+	fs := http.FileServer(http.Dir("./public"))
+	mux.Handle("/", fs) // serves public/index.html at "/"
 
 	log.Println("Server starting on :8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", mux)
 }
