@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Go Chatroom</title>
+    <title>Go Chatroom Project</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #121212; /* Darker background */
+            color: #e0e0e0; /* Light text color */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,31 +16,31 @@
         .chat-container {
             width: 90%;
             max-width: 600px;
-            background: white;
+            background: #1e1e1e; /* Slightly lighter dark background for the container */
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow */
             padding: 20px;
             box-sizing: border-box;
         }
         .chat-log {
             height: 400px;
             overflow-y: auto;
-            border: 1px solid #ccc;
+            border: 1px solid #333; /* Darker border */
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 4px;
-            background: #e9e9e9;
+            background: #2b2b2b; /* Darker background for the chat log */
         }
         .chat-log p {
             margin: 5px 0;
             padding: 5px;
             border-radius: 5px;
-            background: #fff;
+            background: #3a3a3a; /* Darker message bubble background */
             word-wrap: break-word;
         }
         .chat-log p .author {
             font-weight: bold;
-            color: #333;
+            color: #bb86fc; /* A vibrant color for the author's name */
         }
         form {
             display: flex;
@@ -48,27 +49,29 @@
         input[type="text"] {
             flex-grow: 1;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #333;
             border-radius: 4px;
             font-size: 16px;
+            background-color: #1e1e1e; /* Dark input background */
+            color: #e0e0e0; /* Light text color */
         }
         button {
             padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
+            background-color: #bb86fc; /* Button color matching the author name */
+            color: #121212; /* Dark text on button */
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #9c68e3; /* Slightly darker hover color */
         }
     </style>
 </head>
 <body>
 <div class="chat-container">
-    <h1>Go Chatroom</h1>
+    <h1 style="text-align: center;">Go Chatroom Project</h1>
     <div id="chat-log" class="chat-log"></div>
     <form id="message-form">
         <input type="text" id="message-input" autocomplete="off" placeholder="Type a message...">
