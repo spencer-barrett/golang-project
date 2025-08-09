@@ -34,7 +34,7 @@ body {
 }
 .chat-log p .author {
     font-weight: bold;
-    color: #bb86fc;
+    /*color: #bb86fc;*/
 }
 form {
     display: flex;
@@ -69,3 +69,14 @@ dialog::backdrop { background: rgb(0 0 0 / 0.5); }
 }
 #nameInput { padding: .6rem .7rem; font-size: 1rem; }
 menu { display: flex; gap: .5rem; justify-content: flex-end; margin: 0; padding: 0; }
+
+.chat-log p.system {
+    color: #9aa;
+    text-align: center;
+    background: transparent;
+}
+
+.activeUsers{
+    text-align: center;
+    color: grey;
+}

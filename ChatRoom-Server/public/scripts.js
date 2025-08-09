@@ -12,26 +12,62 @@ document.addEventListener('DOMContentLoaded', (key, value) => {
     const form = document.getElementById('nameForm');
     const input = document.getElementById('nameInput');
 
+    const activeUsers = document.getElementById('active-users');
+
 
     function initApp() {
         // Establish a WebSocket connection
 
         const proto = location.protocol === 'https:' ? 'wss' : 'ws';
-        socket = new WebSocket(`${proto}://${location.host}/ws`);
+        socket = new WebSocket(`${proto}://${location.host}/ws?name=${encodeURIComponent(username)}`);
 
         socket.addEventListener('open', () => console.log('ws open'));
         socket.addEventListener('close', () => console.log('ws closed'));
         socket.addEventListener('error', e => console.log('ws error', e));
+
+
+        function colorFor(name) {
+            let hash = 0;
+            for(let i = 0; i < name.length; i++) {
+                hash = (hash* 31 + name.charCodeAt(i)) | 0;
+            }
+            const hue = Math.abs(hash) % 360;
+            return `hsl(${hue} 70% 70%)`;
+        }
 
 // Event listener for incoming messages
         socket.addEventListener("message", function (event) {
             let message;
             try  {message = JSON.parse(event.data) } catch (e) {return}
 
-            if(!message || !message.author || !message.messageContent) return;
+
+            if (message.type === "count" && typeof message.count === "number"){
+                activeUsers.textContent = `Active Users: ${message.count}`;
+                return;
+            }
+
+
+
+            const text = message.messageContent ?? message.content;
+
+            if(!message || !message.author || !text) return;
 
             const p = document.createElement('p');
-            p.innerHTML = `<span class="author">${message.author}:</span> ${message.messageContent}`;
+
+            if(message.author === 'system') {
+                p.className = 'system';
+                p.textContent = text;
+            }else {
+                const who = document.createElement('span');
+                who.className = 'author';
+                who.textContent = `${message.author}:`;
+                who.style.color = colorFor(message.author);
+                p.appendChild(who);
+                p.append(' ' + text);
+                // p.innerHTML = `<span class="author">${message.author}:</span> ${text}`;
+
+            }
+
             chatLog.appendChild(p);
             chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
         });
