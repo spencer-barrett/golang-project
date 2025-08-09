@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', (key, value) => {
 
         function colorFor(name) {
             let hash = 0;
-            for(let i = 0; i < name.length; i++) {
-                hash = (hash* 31 + name.charCodeAt(i)) | 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = (hash * 31 + name.charCodeAt(i)) | 0;
             }
             const hue = Math.abs(hash) % 360;
             return `hsl(${hue} 70% 70%)`;
@@ -38,26 +38,29 @@ document.addEventListener('DOMContentLoaded', (key, value) => {
 // Event listener for incoming messages
         socket.addEventListener("message", function (event) {
             let message;
-            try  {message = JSON.parse(event.data) } catch (e) {return}
+            try {
+                message = JSON.parse(event.data)
+            } catch (e) {
+                return
+            }
 
 
-            if (message.type === "count" && typeof message.count === "number"){
+            if (message.type === "count" && typeof message.count === "number") {
                 activeUsers.textContent = `Active Users: ${message.count}`;
                 return;
             }
 
 
-
             const text = message.messageContent ?? message.content;
 
-            if(!message || !message.author || !text) return;
+            if (!message || !message.author || !text) return;
 
             const p = document.createElement('p');
 
-            if(message.author === 'system') {
+            if (message.author === 'system') {
                 p.className = 'system';
                 p.textContent = text;
-            }else {
+            } else {
                 const who = document.createElement('span');
                 who.className = 'author';
                 who.textContent = `${message.author}:`;
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', (key, value) => {
         event.preventDefault();
         const messageContent = messageInput.value.trim();
         if (!messageContent || !socket || socket.readyState !== WebSocket.OPEN) return;
-        socket.send(JSON.stringify({ author: username, messageContent }));
+        socket.send(JSON.stringify({author: username, messageContent}));
         messageInput.value = '';
 
     });

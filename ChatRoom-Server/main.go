@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -107,8 +108,13 @@ func main() {
 	fs := http.FileServer(http.Dir("./public"))
 	mux.Handle("/", fs) // serves public/index.html at "/"
 
-	log.Println("Server starting on :8080")
-	err := http.ListenAndServe(":8080", mux)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // local dev default
+	}
+
+	log.Println("Server starting on " + port)
+	err := http.ListenAndServe(":"+port, mux)
 	if err != nil {
 		return
 	}
