@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: go-chatroom
+    env: go
+    plan: free
+    rootDir: ChatRoom-Server
+    buildCommand: go build -tags netgo -ldflags "-s -w" -o app
+    startCommand: ./app
+    autoDeploy: true
+    envVars:
+      - key: GOTOOLCHAIN
+        value: auto
+    healthCheckPath: /
