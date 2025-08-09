@@ -108,5 +108,8 @@ func main() {
 	mux.Handle("/", fs) // serves public/index.html at "/"
 
 	log.Println("Server starting on :8080")
-	http.ListenAndServe(":8080", mux)
+	err := http.ListenAndServe(":8080", mux)
+	if err != nil {
+		return
+	}
 }
