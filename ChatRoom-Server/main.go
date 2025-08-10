@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// WireMessage interface to handle clients connection/disconnection
 type WireMessage struct {
 	Author  string `json:"author"`
 	Content string `json:"content"`
