@@ -16,16 +16,17 @@ type WireMessage struct {
 	Content string `json:"content"`
 }
 
-// stores websock connections
+// stores websocket connections
 var clients = make(map[*websocket.Conn]bool)
 
-// converts html to WebSocket request
+// converts html to websocket request
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
 	},
 }
 
+// broadcast the current active user count as JSON
 func broadcastCount() {
 	payload := []byte(fmt.Sprintf(`{"type":"count","count":%d}`, len(clients)))
 	broadcast(payload)
@@ -33,12 +34,14 @@ func broadcastCount() {
 
 // handles incoming websocket requests
 func serveWebSocket(w http.ResponseWriter, r *http.Request) {
+
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("upgrade:", err)
 		return
 	}
 
+	// get username
 	name := r.URL.Query().Get("name")
 
 	if name == "" {
@@ -58,6 +61,7 @@ func serveWebSocket(w http.ResponseWriter, r *http.Request) {
 	broadcast(b)
 	broadcastCount()
 
+	// cleanup on disconnection
 	defer func() {
 		delete(clients, conn)
 		err := conn.Close()
@@ -104,13 +108,13 @@ func main() {
 	// WS endpoint
 	mux.HandleFunc("/ws", serveWebSocket)
 
-	// Static files from ./public
+	// files from ./public
 	fs := http.FileServer(http.Dir("./public"))
-	mux.Handle("/", fs) // serves public/index.html at "/"
+	mux.Handle("/", fs)
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // local dev default
+		port = "8080"
 	}
 
 	log.Println("Server starting on " + port)
